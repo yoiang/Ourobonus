@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Runner : MonoBehaviour
 {
+	public Worm worm;
+	
 	public float maxSpeed = 10.0f;
 	public float jumpSpeed = 80.0f;
 	public float gravity = 9.8f;
@@ -48,20 +50,21 @@ public class Runner : MonoBehaviour
 	private void DoGravity()
 	{
 		ySpeed -= gravity * Time.deltaTime;
+		transform.up = transform.position - worm.transform.position;
 	}
 	
 	private void UpdatePosition()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y + ySpeed * Time.deltaTime, transform.position.z);
+		transform.position += transform.up * ySpeed * Time.deltaTime;
 	}
 	
 	private void ProcessCollisions()
 	{
 		RaycastHit hit;
-		Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - collisionHeight, transform.position.z));
-		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
+		//Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - collisionHeight, transform.position.z));
+		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
 		{
-			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight, transform.position.z);
+			transform.position = hit.point + transform.up * collisionHeight;
 			Land();
 		}
 		else
@@ -81,9 +84,9 @@ public class Runner : MonoBehaviour
 		
 		//hackaroony, we gotta clear the floor
 		RaycastHit hit;
-		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
+		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
 		{
-			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight+0.01f, transform.position.z);
+			transform.position = hit.point + transform.up * (collisionHeight+0.01f);
 		}
 		//play anim
 	}
