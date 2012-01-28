@@ -79,4 +79,9 @@ public class Worm : MonoBehaviour
 	{
 		transform.Rotate( new Vector3( 0f, 0f, 1f ), rotationSpeed * Time.deltaTime );
 	}
+	
+	public float GetRotationSpeed()
+	{
+		return rotationSpeed;
+	}
 }
