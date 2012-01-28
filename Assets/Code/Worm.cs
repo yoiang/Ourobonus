@@ -29,4 +29,9 @@ public class Worm : MonoBehaviour
 		}
 		transform.localScale = currentScale;
 	}
+	
+	public float GetRotationSpeed()
+	{
+		return rotationSpeed;
+	}
 }

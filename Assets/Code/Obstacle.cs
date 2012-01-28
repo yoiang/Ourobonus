@@ -4,6 +4,7 @@ using System.Collections;
 public class Obstacle : Entity
 {
 	public float collisionSpeedLoss;
+	
 	// Use this for initialization
 	void Start () {
 	
