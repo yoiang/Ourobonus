@@ -6,10 +6,10 @@ public class Runner : MonoBehaviour
 	public float maxSpeed = 10.0f;
 	public float jumpSpeed = 80.0f;
 	public float gravity = 9.8f;
+	public float bounce = 0.0f;
 	
-	private float speed = 0.0f;
+	//private float speed = 0.0f;
 	private float ySpeed = 0.0f;
-	private bool jumping = false;
 	private bool onGround = false;
 	private float height;
 	private float collisionHeight;
@@ -19,7 +19,6 @@ public class Runner : MonoBehaviour
 	{
 		height = (transform.collider as CapsuleCollider).height * transform.localScale.y;
 		collisionHeight = height / 2;
-		Debug.Log("boop" + speed);
 	}
 	
 	// Update is called once per frame
@@ -64,17 +63,20 @@ public class Runner : MonoBehaviour
 			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight, transform.position.z);
 			Land();
 		}
+		else
+		{
+			onGround = false;
+		}
 	}
 	
 	private void Jump()
-	{	
-		if (jumping || !onGround)
+	{
+		if (!onGround)
 		{
 			return;
 		}
 		
-		jumping = true;
-		ySpeed += jumpSpeed;
+		ySpeed = jumpSpeed;
 		
 		//hackaroony, we gotta clear the floor
 		RaycastHit hit;
@@ -88,12 +90,7 @@ public class Runner : MonoBehaviour
 	private void Land()
 	{
 		onGround = true;
-		
-		if (!jumping)
-		{
-			return;
-		}
-		jumping = false;
+		ySpeed = Mathf.Abs(ySpeed) * bounce;
 		//play anim
 	}
 }
