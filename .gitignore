@@ -1,3 +1,6 @@
 .DS_Store
 Temp/*
 Library/cache/*
+Library/metadata/*
+Library/previews/*
+Ourobonus.userprefs
