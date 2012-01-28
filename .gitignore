@@ -1,8 +1,11 @@
 .DS_Store
 Ourobonus.userprefs
-Temp/*
+Temp
 Library/*
-
+build
+*.csproj
+*.pidb
+*.sln
 
 !Library/*.asset
 !Library/AssetImportState
