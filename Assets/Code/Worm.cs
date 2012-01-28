@@ -6,17 +6,16 @@ public class Worm : MonoBehaviour
 	public float rotationSpeed = 10f;
 	public float growthSpeed = 0.05f;
 	
-	public GameObject model;
 	protected Vector3 currentScale;
 	
 	// Use this for initialization
 	void Start () {
-		currentScale = model.transform.localScale;
+		currentScale = transform.localScale;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		model.transform.Rotate( new Vector3( 0f, 1f, 0f ), rotationSpeed * Time.deltaTime );
+		transform.Rotate( new Vector3( 0f, 1f, 0f ), rotationSpeed * Time.deltaTime );
 
 		currentScale.x -= growthSpeed * Time.deltaTime;
 		currentScale.z -= growthSpeed * Time.deltaTime;
@@ -28,6 +27,6 @@ public class Worm : MonoBehaviour
 		{
 			currentScale.z = 0;
 		}
-		model.transform.localScale = currentScale;
+		transform.localScale = currentScale;
 	}
 }
