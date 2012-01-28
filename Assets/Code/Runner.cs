@@ -10,14 +10,14 @@ public class Runner : MonoBehaviour
 	private float speed = 0.0f;
 	private float ySpeed = 0.0f;
 	private bool jumping = false;
-	private bool jumpingThisFrame = false;
+	private bool onGround = false;
 	private float height;
 	private float collisionHeight;
 	
 	// Use this for initialization
 	void Start ()
 	{
-		height = (transform.collider as CapsuleCollider).height;
+		height = (transform.collider as CapsuleCollider).height * transform.localScale.y;
 		collisionHeight = height / 2;
 		Debug.Log("boop" + speed);
 	}
@@ -25,12 +25,10 @@ public class Runner : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		ProcessInput();
 		DoGravity();
+		ProcessInput();
+		UpdatePosition();
 		ProcessCollisions();
-		
-		transform.position = new Vector3(transform.position.x, transform.position.y + ySpeed * Time.deltaTime, transform.position.z);
-		jumpingThisFrame = false;
 	}
 	
 	private void ProcessInput()
@@ -53,39 +51,48 @@ public class Runner : MonoBehaviour
 		ySpeed -= gravity * Time.deltaTime;
 	}
 	
+	private void UpdatePosition()
+	{
+		transform.position = new Vector3(transform.position.x, transform.position.y + ySpeed * Time.deltaTime, transform.position.z);
+	}
+	
 	private void ProcessCollisions()
 	{
-		if (!jumpingThisFrame)
+		RaycastHit hit;
+		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
 		{
-			RaycastHit hit;
-			if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
-			{
-				transform.position = new Vector3(transform.position.x, hit.point.y-collisionHeight, transform.position.y);
-				Land();
-			}
+			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight, transform.position.z);
+			Land();
 		}
 	}
 	
 	private void Jump()
-	{
-		if (jumping)
+	{	
+		if (jumping || !onGround)
 		{
 			return;
 		}
 		
 		jumping = true;
-		jumpingThisFrame = true;
 		ySpeed += jumpSpeed;
+		
+		//hackaroony, we gotta clear the floor
+		RaycastHit hit;
+		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
+		{
+			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight+0.01f, transform.position.z);
+		}
 		//play anim
 	}
 	
 	private void Land()
 	{
+		onGround = true;
+		
 		if (!jumping)
 		{
 			return;
 		}
-		
 		jumping = false;
 		//play anim
 	}
