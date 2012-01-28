@@ -58,6 +58,7 @@ public class Runner : MonoBehaviour
 	private void ProcessCollisions()
 	{
 		RaycastHit hit;
+		Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - collisionHeight, transform.position.z));
 		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_SNAKE))
 		{
 			transform.position = new Vector3(transform.position.x, hit.point.y+collisionHeight, transform.position.z);
