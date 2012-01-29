@@ -9,30 +9,46 @@ public class Runner : MonoBehaviour
 	public float jumpSpeed = 80.0f;
 	public float gravity = 9.8f;
 	public float bounce = 0.0f;
-	public float minimumX = 162.0f;
-	public float maximumX = 210.0f;
-	public float xMatchSpeed = 0.0f;
 	
 	private float speed = 0.0f;
 	private float ySpeed = 1.0f;
 	private bool onGround = false;
+
 	private float height;
 	private float collisionHeight;
+	private Animation anim;
+	private string currentAnimationName;
 	
 	// Use this for initialization
-	void Start ()
+	public void Start ()
 	{
 		height = (transform.collider as CapsuleCollider).height * transform.localScale.y;
 		collisionHeight = height / 2;
+		speed = worm.GetCircumferenceSpeed();
+		anim = GetComponentInChildren(typeof(Animation)) as Animation;
+		currentAnimationName = "run";
+		maxSpeed += worm.GetCircumferenceSpeed();
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	public void Update ()
 	{
 		DoGravity();
 		ProcessInput();
 		UpdatePosition();
 		ProcessCollisions();
+		
+		PlayAnimation("run");
+		anim["run"].speed = (speed / maxSpeed) * 2.5f;
+	}
+	
+	public void OnTriggerEnter(Collider c)
+	{
+		Obstacle o = (c.GetComponent(typeof(Obstacle)) as Obstacle);
+		if (o != null)
+		{
+			HitObstacle(o);
+		}
 	}
 	
 	private void ProcessInput()
@@ -46,7 +62,7 @@ public class Runner : MonoBehaviour
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << Globals.LAYER_RUNNER))
 			{
 				Jump();
-			}
+			}			
 		}
 		
 		if (Input.GetKey(KeyCode.LeftArrow))
@@ -57,7 +73,7 @@ public class Runner : MonoBehaviour
 		else if (Input.GetKey(KeyCode.RightArrow))
 		{
 			speed += 15.0f * Time.deltaTime;
-			speed = speed > worm.GetRotationSpeed() + Globals.MAX_SPEED_DIFFERENCE ? worm.GetRotationSpeed() + Globals.MAX_SPEED_DIFFERENCE : speed;
+			speed = speed > maxSpeed ? maxSpeed : speed;
 		}
 		else if (Input.GetKeyUp(KeyCode.Space))
 		{
@@ -74,24 +90,22 @@ public class Runner : MonoBehaviour
 	private void UpdatePosition()
 	{
 		//gravity
-		transform.position += transform.up * ySpeed * Time.deltaTime;
+		transform.localPosition += transform.up * ySpeed * Time.deltaTime;
 		
-		//lateral speed
-		float speedRatio = (speed - worm.GetRotationSpeed()) / Globals.MAX_SPEED_DIFFERENCE;
-		speedRatio = Mathf.Clamp(speedRatio, -1.0f, 1.0f);
-		speedRatio = (speedRatio + 1.0f) / 2.0f;
-		float desiredX = (maximumX - minimumX) * speedRatio + minimumX;
-		//TODO maybe don't use a lerp, instead do a constant speed change
-		transform.position = Vector3.Lerp(transform.position, new Vector3(desiredX, transform.position.y, transform.position.z), Time.deltaTime * xMatchSpeed);
+		if (Physics.Raycast(transform.localPosition, -transform.up, collisionHeight*1.15f, 1 << Globals.LAYER_WORM))
+		{
+			//lateral speed
+			float overallSpeed = speed - worm.GetCircumferenceSpeed();
+			transform.localPosition += transform.right * overallSpeed * Time.deltaTime;
+		}
 	}
 	
 	private void ProcessCollisions()
 	{
 		RaycastHit hit;
-		//Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - collisionHeight, transform.position.z));
-		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
+		if (Physics.Raycast(transform.localPosition, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
 		{
-			transform.position = hit.point + transform.up * collisionHeight;
+			transform.localPosition = hit.point + transform.up * collisionHeight;
 			Land();
 		}
 		else
@@ -111,9 +125,9 @@ public class Runner : MonoBehaviour
 		
 		//hackaroony, we gotta clear the floor
 		RaycastHit hit;
-		if (Physics.Raycast(transform.position, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
+		if (Physics.Raycast(transform.localPosition, -transform.up, out hit, collisionHeight, 1 << Globals.LAYER_WORM))
 		{
-			transform.position = hit.point + transform.up * (collisionHeight+0.01f);
+			transform.localPosition = hit.point + transform.up * (collisionHeight+0.01f);
 		}
 		//play anim
 	}
@@ -123,5 +137,51 @@ public class Runner : MonoBehaviour
 		onGround = true;
 		ySpeed = Mathf.Abs(ySpeed) * bounce;
 		//play anim
+	}
+	
+	private void HitObstacle(Obstacle o)
+	{
+		speed -= o.GetCollisionSpeedLoss();
+		speed = speed < 0 ? 0 : speed;
+		//play anim
+	}
+	
+	private void PlayAnimation(string name)
+	{
+		if (!anim)
+		{
+			return;
+		}
+		
+		if (ShouldPlayAnimation(name))
+		{
+			anim.CrossFade(name);
+			currentAnimationName = name;
+		}
+	}
+	
+	private bool ShouldPlayAnimation(string name)
+	{
+		switch(name)
+		{
+			case "run":
+				if (onGround && (anim.IsPlaying("jump") || anim.IsPlaying("jump_land") || anim.IsPlaying("jump_takeoff")))
+				{
+					return true;
+				}
+				return false;
+			case "jump_takeoff":
+			case "jump":
+				if (!onGround && anim.IsPlaying("run"))
+				{
+					return true;
+				}
+				return false;
+			case "jump_land":
+				return true;
+			case "hit":
+				return true;
+		}
+		return false;
 	}
 }
