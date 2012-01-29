@@ -1,0 +1,72 @@
+fileFormatVersion: 1
+guid: c541aac569da14759bb6bb1d02ed9b60
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+  nodeInfo:
+    ikHandle1:
+    - 100000
+    - 400000
+    ikHandle2:
+    - 100002
+    - 400002
+    //RootNode:
+    - 100004
+    - 400004
+    - 11100000
+    joint4:
+    - 100006
+    - 400006
+    head:
+    - 100008
+    - 400008
+    polySurface23:
+    - 100010
+    - 400010
+    lower:
+    - 100014
+    - 400014
+    jaw:
+    - 100016
+    - 400016
+    upper:
+    - 100018
+    - 400018
+    jaw_upper:
+    - 100020
+    - 400020
+    jaw_lower:
+    - 100022
+    - 400022
+    neck:
+    - 100024
+    - 400024
+    - 13700000
+    joint5:
+    - 100026
+    - 400026
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: pCube1
+    4300002: polySurface22
+    4300004: polySurface23
+    7400000: Take 001 //// snake_animation
