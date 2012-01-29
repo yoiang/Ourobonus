@@ -31,22 +31,22 @@ ModelImporter:
         firstFrame: 22
         lastFrame: 29
         loop: 0
-        wrapMode: 0
+        wrapMode: 1
       float:
         firstFrame: 30
         lastFrame: 38
         loop: 0
-        wrapMode: 0
+        wrapMode: 2
       land:
         firstFrame: 39
         lastFrame: 47
         loop: 0
-        wrapMode: 0
+        wrapMode: 1
       trip:
         firstFrame: 48
         lastFrame: 60
         loop: 0
-        wrapMode: 0
+        wrapMode: 1
   nodeInfo:
     polySurface21:
     - 100000
