@@ -1,0 +1,197 @@
+fileFormatVersion: 1
+guid: 81778350f84634f6f98e95f74eaf01fc
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+    clips:
+      run:
+        firstFrame: 1
+        lastFrame: 21
+        loop: 1
+        wrapMode: 2
+      jump:
+        firstFrame: 22
+        lastFrame: 29
+        loop: 0
+        wrapMode: 0
+      float:
+        firstFrame: 30
+        lastFrame: 38
+        loop: 0
+        wrapMode: 0
+      land:
+        firstFrame: 39
+        lastFrame: 47
+        loop: 0
+        wrapMode: 0
+      trip:
+        firstFrame: 48
+        lastFrame: 60
+        loop: 0
+        wrapMode: 0
+  nodeInfo:
+    polySurface21:
+    - 100000
+    - 400000
+    group2:
+    - 100002
+    - 400002
+    ikHandle3:
+    - 100004
+    - 400004
+    pasted__Cylinder01:
+    - 100006
+    - 400006
+    - 3300000
+    - 2300000
+    nurbsCircle17:
+    - 100008
+    - 400008
+    group1:
+    - 100010
+    - 400010
+    ikHandle1:
+    - 100012
+    - 400012
+    nurbsCircle18:
+    - 100014
+    - 400014
+    ikHandle4:
+    - 100016
+    - 400016
+    nurbsCircle16:
+    - 100018
+    - 400018
+    nurbsCircle9:
+    - 100020
+    - 400020
+    nurbsCircle15:
+    - 100022
+    - 400022
+    ikHandle2:
+    - 100024
+    - 400024
+    nurbsCircle5:
+    - 100026
+    - 400026
+    nurbsCircle14:
+    - 100028
+    - 400028
+    nurbsCircle12:
+    - 100030
+    - 400030
+    nurbsCircle3:
+    - 100032
+    - 400032
+    nurbsCircle7:
+    - 100034
+    - 400034
+    nurbsCircle1:
+    - 100036
+    - 400036
+    nurbsCircle4:
+    - 100038
+    - 400038
+    joint29:
+    - 100040
+    - 400040
+    nurbsCircle2:
+    - 100042
+    - 400042
+    joint11:
+    - 100044
+    - 400044
+    joint27:
+    - 100046
+    - 400046
+    joint28:
+    - 100048
+    - 400048
+    joint9:
+    - 100050
+    - 400050
+    joint26:
+    - 100052
+    - 400052
+    joint22:
+    - 100054
+    - 400054
+    joint10:
+    - 100056
+    - 400056
+    joint24:
+    - 100058
+    - 400058
+    joint8:
+    - 100060
+    - 400060
+    joint6:
+    - 100062
+    - 400062
+    joint25:
+    - 100064
+    - 400064
+    joint4:
+    - 100066
+    - 400066
+    joint23:
+    - 100068
+    - 400068
+    joint18:
+    - 100070
+    - 400070
+    joint5:
+    - 100072
+    - 400072
+    joint16:
+    - 100074
+    - 400074
+    joint30:
+    - 100076
+    - 400076
+    Root:
+    - 100078
+    - 400078
+    joint17:
+    - 100080
+    - 400080
+    //RootNode:
+    - 100082
+    - 400082
+    - 11100000
+    waist:
+    - 100084
+    - 400084
+    base:
+    - 100086
+    - 400086
+    - 13700000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: pasted__Cylinder01
+    4300002: polySurface21
+    7400000: Take 001 //// guy_animation
+    7400002: run //// guy_animation
+    7400004: jump //// guy_animation
+    7400006: float //// guy_animation
+    7400008: land //// guy_animation
+    7400010: trip //// guy_animation
