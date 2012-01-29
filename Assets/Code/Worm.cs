@@ -84,4 +84,9 @@ public class Worm : MonoBehaviour
 	{
 		return rotationSpeed;
 	}
+	
+	public float GetCircumferenceSpeed()
+	{
+		return Mathf.Deg2Rad * rotationSpeed * _radiusSize;
+	}
 }

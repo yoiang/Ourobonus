@@ -21,6 +21,12 @@ ModelImporter:
     animationCompression: 1
     animationWrapMode: 0
     splitAnimations: 1
+    clips:
+      run:
+        firstFrame: 0
+        lastFrame: 20
+        loop: 1
+        wrapMode: 2
   nodeInfo:
     joint5:
     - 100000
@@ -167,3 +173,4 @@ AssetImporter:
     4300000: pasted__polySurface286
     4300002: pasted__Cylinder01
     7400000: Take 001 //// guy_run
+    7400002: run //// guy_run
