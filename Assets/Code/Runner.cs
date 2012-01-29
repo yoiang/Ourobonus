@@ -13,6 +13,7 @@ public class Runner : MonoBehaviour
 	private float speed = 0.0f;
 	private float ySpeed = 1.0f;
 	private bool onGround = false;
+	private bool hadAirTime = false;
 
 	private float height;
 	private float collisionHeight;
@@ -28,6 +29,7 @@ public class Runner : MonoBehaviour
 		anim = GetComponentInChildren(typeof(Animation)) as Animation;
 		currentAnimationName = "run";
 		maxSpeed += worm.GetCircumferenceSpeed();
+		//Time.timeScale = 0.1f;
 	}
 	
 	// Update is called once per frame
@@ -38,8 +40,15 @@ public class Runner : MonoBehaviour
 		UpdatePosition();
 		ProcessCollisions();
 		
-		PlayAnimation("run");
-		anim["run"].speed = (speed / maxSpeed) * 2.5f;
+		if (onGround)
+		{
+			PlayAnimation("run");
+			anim["run"].speed = (speed / maxSpeed) * 2.5f;
+		}
+		else if (hadAirTime)
+		{
+			PlayAnimation("float");
+		}
 	}
 	
 	public void OnTriggerEnter(Collider c)
@@ -92,11 +101,15 @@ public class Runner : MonoBehaviour
 		//gravity
 		transform.localPosition += transform.up * ySpeed * Time.deltaTime;
 		
-		if (Physics.Raycast(transform.localPosition, -transform.up, collisionHeight*1.15f, 1 << Globals.LAYER_WORM))
+		if (Physics.Raycast(transform.localPosition, -transform.up, collisionHeight*1.3f, 1 << Globals.LAYER_WORM))
 		{
 			//lateral speed
 			float overallSpeed = speed - worm.GetCircumferenceSpeed();
 			transform.localPosition += transform.right * overallSpeed * Time.deltaTime;
+		}
+		else
+		{
+			hadAirTime = true;
 		}
 	}
 	
@@ -129,21 +142,25 @@ public class Runner : MonoBehaviour
 		{
 			transform.localPosition = hit.point + transform.up * (collisionHeight+0.01f);
 		}
-		//play anim
+		PlayAnimation("jump");
 	}
 	
 	private void Land()
 	{
+		if (hadAirTime)
+		{
+			PlayAnimation("land");
+		}
 		onGround = true;
 		ySpeed = Mathf.Abs(ySpeed) * bounce;
-		//play anim
+		hadAirTime = false;
 	}
 	
 	private void HitObstacle(Obstacle o)
 	{
 		speed -= o.GetCollisionSpeedLoss();
 		speed = speed < 0 ? 0 : speed;
-		//play anim
+		PlayAnimation("trip");
 	}
 	
 	private void PlayAnimation(string name)
@@ -165,23 +182,34 @@ public class Runner : MonoBehaviour
 		switch(name)
 		{
 			case "run":
-				if (onGround && (anim.IsPlaying("jump") || anim.IsPlaying("jump_land") || anim.IsPlaying("jump_takeoff")))
+				if (onGround && !(IsPlaying("jump") || IsPlaying("float") || IsPlaying("land") || IsPlaying("trip")))
 				{
 					return true;
 				}
 				return false;
-			case "jump_takeoff":
 			case "jump":
-				if (!onGround && anim.IsPlaying("run"))
+			return true;
+				if (!IsPlaying("trip"))
+				{
+					return true;
+				}
+				goto case "float";
+			case "float":
+				if (!onGround && IsPlaying("run") && !IsPlaying("jump"))
 				{
 					return true;
 				}
 				return false;
-			case "jump_land":
+			case "land":
 				return true;
-			case "hit":
+			case "trip":
 				return true;
 		}
 		return false;
+	}
+	
+	private bool IsPlaying(string name)
+	{
+		return (anim.IsPlaying(name) && (anim[name].normalizedTime < 1.0f || (anim[name].wrapMode != WrapMode.Once && anim[name].wrapMode != WrapMode.Default)));
 	}
 }
