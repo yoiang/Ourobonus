@@ -1,27 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class Projectile : MonoBehaviour 
+public class Projectile : Entity 
 {
-	public Camera activeCamera;
 	public bool isBillboarded;
 	
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
 	{
-		//------------------------
-		// Launch into the world.
-		//------------------------
+		//--------------------------------------
+		// Place wherever the mouse-pointer is.
+		//--------------------------------------
+		foreach (Transform child in transform)
+		{
+			child.localPosition = new Vector3(0,0,0);
+			//child.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+		}
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	public override void Update () 
 	{
 		//------------------------
 		// Existing in the world.
 		//------------------------
 		if ( isBillboarded )
-			transform.LookAt (transform.position + activeCamera.transform.rotation * Vector3.back,
-							  activeCamera.transform.rotation * Vector3.up);
+			transform.LookAt (transform.position + Camera.main.transform.rotation * Vector3.back,
+							  Camera.main.transform.rotation * Vector3.up);
 	}
 }
