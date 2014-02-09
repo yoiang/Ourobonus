@@ -73,8 +73,11 @@ public class Runner : MonoBehaviour
 				Jump();
 			}			
 		}
-		
-		if (Input.GetKey(KeyCode.LeftArrow))
+
+		if (Input.GetKey (KeyCode.UpArrow)) 
+		{
+			Jump();
+		} else if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			speed -= 15.0f * Time.deltaTime;
 			speed = speed < 0 ? 0 : speed;
